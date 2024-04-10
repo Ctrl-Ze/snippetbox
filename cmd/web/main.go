@@ -6,13 +6,17 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"snippetbox.andu.net/internal/models"
 
 	_ "github.com/go-sql-driver/mysql" // New import
 )
 
+// Add a snippets field to the application struct. This will allow us to
+// make the SnippetModel object available to our handlers.
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	snippets *models.SnippetModel
 }
 
 func main() {
@@ -61,6 +65,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		snippets: &models.SnippetModel{DB: db},
 	}
 
 	srv := &http.Server{
